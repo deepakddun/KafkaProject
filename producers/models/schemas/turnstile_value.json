@@ -1,0 +1,13 @@
+{
+  "namespace": "com.udacity",
+  "type": "record",
+  "name": "turnstile.value",
+  "doc": "Schema for arrival value",
+  "fields": [
+    {
+      "name": "station_id", "type": "int",
+      "name": "station_name", "type": "int",
+      "name": "line", "type": "string"
+    }
+  ]
+}
