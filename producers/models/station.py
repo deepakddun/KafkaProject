@@ -67,6 +67,13 @@ class Station(Producer):
         #
         #
         logger.info("arrival kafka integration incomplete - skipping")
+        print(train)
+        print(type(train.train_id))
+        print(train.train_id)
+        print(type(train.status.value))
+        print(train.status.value)
+        print(train.status.name)
+        print(train.status)
         self.producer.produce(
             topic=self.topic_name,
             key={"timestamp": self.time_millis()},
@@ -75,10 +82,10 @@ class Station(Producer):
                     "train_id":train.train_id,
                     "direction":direction,
                     "line":self.color.name,
-                    "train_status":train.status,
-                    "prev_station_id":prev_direction,
+                    "train_status":train.status.name,
+                    "prev_station_id":prev_station_id,
                     "prev_direction":prev_direction
-            },
+            }
         )
 
     def __str__(self):

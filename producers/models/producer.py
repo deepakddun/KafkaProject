@@ -37,8 +37,8 @@ class Producer:
         #
         #
         self.broker_properties = {
-            "bootstrap.servers": "PLAINTEXT://kafka0:9092",
-            "schema_registry_url": "http://schema-registry:8081"
+            "bootstrap.servers": "localhost:9092",
+            "schema_registry_url": "http://localhost:8081"
 
         }
 
@@ -49,10 +49,11 @@ class Producer:
             Producer.existing_topics.add(self.topic_name)
 
         # TODO: Configure the AvroProducer
-        schema_registry = CachedSchemaRegistryClient({"url": self.broker_properties.get("schema_registry_url")})
+        schema_registry = CachedSchemaRegistryClient(self.broker_properties.get("schema_registry_url"))
         self.producer = AvroProducer({"bootstrap.servers": self.broker_properties.get("bootstrap.servers")},
                                      default_key_schema=self.key_schema,
-                                     default_value_schema=self.value_schema
+                                     default_value_schema=self.value_schema,
+                                     schema_registry=schema_registry
 
                                      )
 
@@ -71,7 +72,7 @@ class Producer:
         admin = AdminClient(conf)
 
         # 2 list all topics which returns the dictionary of topics
-        topics1 = admin.list_topics(timeout=5).topics
+        topics1 = admin.list_topics(timeout=15).topics
         print(topics1)
         # 3 check if the topic is alreday present in broker . If No then create the topic else skip the topic creation
         if topics1.get(self.topic_name) is not None:

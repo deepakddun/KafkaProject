@@ -37,9 +37,10 @@ class Turnstile(Producer):
         #
         #
         print(f"In Turnstile table {station_name}")
+        print(station)
         super().__init__(
 
-            f"{station_name}-{self.station.name}",  # TODO: Come up with a better topic name
+            f"{station_name}-{station.station_id}-{station.color}",  # TODO: Come up with a better topic name
             key_schema=Turnstile.key_schema,
             value_schema=Turnstile.value_schema,
             num_partitions=2,
@@ -59,12 +60,14 @@ class Turnstile(Producer):
         #
         #
         # Its inheriting from producer class
-        self.producer.produce(
+        for i in num_entries:
+            self.producer.produce\
+                    (
             topic=self.topic_name,
             key={"timestamp": self.time_millis()},
             value={
                 "station_id": self.station.station_id,
                 "station_name": self.station.name,
                 "line": self.station.color.name
-            },
-        )
+                }
+            )
